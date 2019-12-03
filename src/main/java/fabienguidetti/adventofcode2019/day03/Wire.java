@@ -2,9 +2,7 @@ package fabienguidetti.adventofcode2019.day03;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 class Wire {
 	private List<Segment> segments;
@@ -16,8 +14,8 @@ class Wire {
 		}
 	}
 
-	Set<Point> locations() {
-		Set<Point> locations = new HashSet<>();
+	List<Point> locations() {
+		List<Point> locations = new ArrayList<>();
 		Point start = new Point(0, 0);
 		for (Segment segment : segments) {
 			List<Point> segmentLocations = segment.locationsFrom(start);
