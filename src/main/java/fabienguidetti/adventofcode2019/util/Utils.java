@@ -1,10 +1,10 @@
-package fabienguidetti.adventofcode2019.day02;
+package fabienguidetti.adventofcode2019.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
-	static List<Integer> splitIntegers(String stringOfIntegers) {
+	public static List<Integer> splitIntegers(String stringOfIntegers) {
 		String[] integerStrings = stringOfIntegers.split(",");
 		List<Integer> integers = new ArrayList<>();
 		for (String s : integerStrings) {
@@ -13,7 +13,7 @@ public class Utils {
 		return integers;
 	}
 
-	static String joinIntegers(List<Integer> integers) {
+	public static String joinIntegers(List<Integer> integers) {
 		List<String> strings = new ArrayList<>();
 		for (Integer n : integers) {
 			strings.add(Integer.toString(n));

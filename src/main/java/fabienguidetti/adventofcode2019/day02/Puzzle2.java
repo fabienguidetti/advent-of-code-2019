@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import fabienguidetti.adventofcode2019.util.Utils;
+
 public class Puzzle2 {
 	public static void main(String[] args) throws IOException {
 		String inputString = Files.readAllLines(Paths.get("day-02-input.txt")).get(0);

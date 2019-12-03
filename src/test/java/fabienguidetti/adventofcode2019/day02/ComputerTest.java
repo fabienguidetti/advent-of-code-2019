@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import fabienguidetti.adventofcode2019.util.Utils;
+
 public class ComputerTest {
 	@Test
 	public void testComputerWorks() {
