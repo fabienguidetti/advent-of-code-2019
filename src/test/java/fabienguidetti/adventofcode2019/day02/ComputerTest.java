@@ -2,11 +2,9 @@ package fabienguidetti.adventofcode2019.day02;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 
-import fabienguidetti.adventofcode2019.util.Utils;
+import fabienguidetti.adventofcode2019.computer.Program;
 
 public class ComputerTest {
 	@Test
@@ -19,9 +17,8 @@ public class ComputerTest {
 	}
 
 	private static void assertComputerProduces(String expectedOutput, String input) {
-		List<Integer> integersInput = Utils.splitIntegers(input);
-		List<Integer> integersOutput = Computer.execute(integersInput);
-		String output = Utils.joinIntegers(integersOutput);
+		Program program = new Program(input);
+		String output = program.execute();
 		assertEquals(expectedOutput, output);
 	}
 }
