@@ -59,6 +59,32 @@ public class Program {
 		} else if (opcode == 4) {
 			output = parameterModeOf(instruction, 1).readValue(state, position + 1);
 			return executeRecursively(position + 2);
+		} else if (opcode == 5) {
+			int value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
+			if (value1 != 0) {
+				int value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
+				return executeRecursively(value2);
+			} else {
+				return executeRecursively(position + 3);
+			}
+		} else if (opcode == 6) {
+			int value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
+			if (value1 == 0) {
+				int value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
+				return executeRecursively(value2);
+			} else {
+				return executeRecursively(position + 3);
+			}
+		} else if (opcode == 7) {
+			int value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
+			int value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
+			parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 < value2 ? 1 : 0);
+			return executeRecursively(position + 4);
+		} else if (opcode == 8) {
+			int value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
+			int value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
+			parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 == value2 ? 1 : 0);
+			return executeRecursively(position + 4);
 		} else {
 			throw new IllegalArgumentException("Unknown opcode : " + opcode);
 		}
