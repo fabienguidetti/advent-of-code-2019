@@ -9,8 +9,6 @@ public class Program {
 	private int output;
 	private List<Integer> state;
 
-	private static final ParameterMode POSITION_MODE = ParameterMode.of(0);
-
 	public Program(String programText) {
 		this.state = Utils.splitIntegers(programText);
 	}
@@ -41,27 +39,42 @@ public class Program {
 	}
 
 	private List<Integer> executeRecursively(int position) {
-		int opcode = state.get(position);
+		int instruction = state.get(position);
+		int opcode = instruction % 100;
 		if (opcode == 99) {
 			return state;
 		} else if (opcode == 1) {
-			int value1 = POSITION_MODE.readValue(state, position + 1);
-			int value2 = POSITION_MODE.readValue(state, position + 2);
-			POSITION_MODE.writeValue(state, position + 3, value1 + value2);
+			int value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
+			int value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
+			parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 + value2);
 			return executeRecursively(position + 4);
 		} else if (opcode == 2) {
-			int value1 = POSITION_MODE.readValue(state, position + 1);
-			int value2 = POSITION_MODE.readValue(state, position + 2);
-			POSITION_MODE.writeValue(state, position + 3, value1 * value2);
+			int value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
+			int value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
+			parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 * value2);
 			return executeRecursively(position + 4);
 		} else if (opcode == 3) {
-			POSITION_MODE.writeValue(state, position + 1, input);
+			parameterModeOf(instruction, 1).writeValue(state, position + 1, input);
 			return executeRecursively(position + 2);
 		} else if (opcode == 4) {
-			output = POSITION_MODE.readValue(state, position + 1);
+			output = parameterModeOf(instruction, 1).readValue(state, position + 1);
 			return executeRecursively(position + 2);
 		} else {
 			throw new IllegalArgumentException("Unknown opcode : " + opcode);
 		}
+	}
+
+	private ParameterMode parameterModeOf(int opcode, int paramPosition) {
+		int powerOf10 = powerOf10(paramPosition + 1);
+		int modeCode = (opcode / powerOf10) % 10;
+		return ParameterMode.of(modeCode);
+	}
+
+	private int powerOf10(int power) {
+		int result = 1;
+		for (int i=1; i <= power; i++) {
+			result *= 10;
+		}
+		return result;
 	}
 }

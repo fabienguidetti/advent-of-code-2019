@@ -38,14 +38,12 @@ public abstract class ParameterMode {
 
 		@Override
 		public int readValue(List<Integer> state, int addressPosition) {
-			int valuePosition = state.get(addressPosition);
-			return state.get(valuePosition);
+			return state.get(addressPosition);
 		}
 
 		@Override
 		public void writeValue(List<Integer> state, int addressPosition, int value) {
-			int valuePosition = state.get(addressPosition);
-			state.set(valuePosition, value);
+			state.set(addressPosition, value);
 		}
 	}
 }
