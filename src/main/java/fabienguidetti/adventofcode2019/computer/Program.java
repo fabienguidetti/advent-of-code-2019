@@ -5,16 +5,18 @@ import java.util.List;
 import fabienguidetti.adventofcode2019.util.Utils;
 
 public class Program {
+	public static final String DELIMITER = ",";
+
 	private int input;
 	private int output;
 	private List<Integer> state;
 
 	public Program(String programText) {
-		this.state = Utils.splitIntegers(programText);
+		this.state = Utils.splitIntegers(programText, DELIMITER);
 	}
 
 	public String execute() {
-		return Utils.joinIntegers(executeRecursively(0));
+		return Utils.joinIntegers(executeRecursively(0), DELIMITER);
 	}
 
 	public void setInput(int n) {
