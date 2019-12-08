@@ -1,5 +1,6 @@
 package fabienguidetti.adventofcode2019.computer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -9,20 +10,35 @@ import fabienguidetti.adventofcode2019.util.Utils;
 public class Program {
 	public static final String DELIMITER = ",";
 
-	private Iterator<Integer> input;
+	private List<Integer> input = new ArrayList<>();
+	private int inputIndex = 0;
+
 	private int output;
+	private boolean hasOutput = false;
+
 	private List<Integer> state;
+	private int position = 0;
 
 	public Program(String programText) {
 		this.state = Utils.splitIntegers(programText, DELIMITER);
 	}
 
 	public String execute() {
-		return Utils.joinIntegers(executeRecursively(0), DELIMITER);
+		while (executeUntilOutput()) {
+		}
+		return Utils.joinIntegers(state, DELIMITER);
 	}
 
-	public void setInput(int... ns) {
-		input = Arrays.stream(ns).iterator();
+	public boolean executeUntilOutput() {
+		hasOutput = false;
+		position = executeRecursively(position);
+		return hasOutput;
+	}
+
+	public void input(int... ns) {
+		for (int n : ns) {
+			input.add(n);
+		}
 	}
 
 	public void setNoun(int n) {
@@ -42,11 +58,11 @@ public class Program {
 		setVerb(2);
 	}
 
-	private List<Integer> executeRecursively(int position) {
+	private int executeRecursively(int position) {
 		int instruction = state.get(position);
 		int opcode = instruction % 100;
 		if (opcode == 99) {
-			return state;
+			return position;
 		} else if (opcode == 1) {
 			int value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
 			int value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
@@ -58,11 +74,12 @@ public class Program {
 			parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 * value2);
 			return executeRecursively(position + 4);
 		} else if (opcode == 3) {
-			parameterModeOf(instruction, 1).writeValue(state, position + 1, input.next());
+			parameterModeOf(instruction, 1).writeValue(state, position + 1, input.get(inputIndex++));
 			return executeRecursively(position + 2);
 		} else if (opcode == 4) {
 			output = parameterModeOf(instruction, 1).readValue(state, position + 1);
-			return executeRecursively(position + 2);
+			hasOutput = true;
+			return position + 2;
 		} else if (opcode == 5) {
 			int value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
 			if (value1 != 0) {

@@ -10,7 +10,7 @@ public class EnhancedComputerTest {
 	@Test
 	public void testInputOutput() {
 		Program program = new Program("3,0,4,0,99");
-		program.setInput(1234);
+		program.input(1234);
 		program.execute();
 		assertEquals(1234, program.getOutput());
 	}
@@ -57,7 +57,7 @@ public class EnhancedComputerTest {
 
 	private void assertOutputEquals(int expectedOutput, int input, String programText) {
 		Program program = new Program(programText);
-		program.setInput(input);
+		program.input(input);
 		program.execute();
 		assertEquals(expectedOutput, program.getOutput());
 	}
