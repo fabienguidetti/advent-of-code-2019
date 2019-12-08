@@ -1,5 +1,7 @@
 package fabienguidetti.adventofcode2019.computer;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import fabienguidetti.adventofcode2019.util.Utils;
@@ -7,7 +9,7 @@ import fabienguidetti.adventofcode2019.util.Utils;
 public class Program {
 	public static final String DELIMITER = ",";
 
-	private int input;
+	private Iterator<Integer> input;
 	private int output;
 	private List<Integer> state;
 
@@ -19,8 +21,8 @@ public class Program {
 		return Utils.joinIntegers(executeRecursively(0), DELIMITER);
 	}
 
-	public void setInput(int n) {
-		input = n;
+	public void setInput(int... ns) {
+		input = Arrays.stream(ns).iterator();
 	}
 
 	public void setNoun(int n) {
@@ -56,7 +58,7 @@ public class Program {
 			parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 * value2);
 			return executeRecursively(position + 4);
 		} else if (opcode == 3) {
-			parameterModeOf(instruction, 1).writeValue(state, position + 1, input);
+			parameterModeOf(instruction, 1).writeValue(state, position + 1, input.next());
 			return executeRecursively(position + 2);
 		} else if (opcode == 4) {
 			output = parameterModeOf(instruction, 1).readValue(state, position + 1);
