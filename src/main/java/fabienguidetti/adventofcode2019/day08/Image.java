@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Image {
+    private static final int COLOR_TRANSPARENT = 2;
+
     private List<Layer> layers = new ArrayList<>();
 
     public Image(int width, int height, String content) {
@@ -22,5 +24,15 @@ public class Image {
 
     public List<Layer> getLayers() {
         return layers;
+    }
+
+    public String renderPixel(int row, int column) {
+        for (Layer layer : layers) {
+            int color = layer.get(row, column);
+            if (color != COLOR_TRANSPARENT) {
+                return color == 0 ? " " : "#";
+            }
+        }
+        return " ";
     }
 }
