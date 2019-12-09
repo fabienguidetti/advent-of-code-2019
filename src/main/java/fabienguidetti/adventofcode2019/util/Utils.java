@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
-	public static List<Integer> splitIntegers(String stringOfIntegers, String delimiter) {
-		String[] integerStrings = stringOfIntegers.split(delimiter);
-		List<Integer> integers = new ArrayList<>();
-		for (String s : integerStrings) {
-			integers.add(Integer.valueOf(s));
+	public static List<Long> splitLongs(String stringOfLongs, String delimiter) {
+		String[] longStrings = stringOfLongs.split(delimiter);
+		List<Long> longs = new ArrayList<>();
+		for (String s : longStrings) {
+			longs.add(Long.valueOf(s));
 		}
-		return integers;
+		return longs;
 	}
 
-	public static String joinIntegers(List<Integer> integers, String delimiter) {
+	public static String joinLongs(List<Long> longs, String delimiter) {
 		List<String> strings = new ArrayList<>();
-		for (Integer n : integers) {
-			strings.add(Integer.toString(n));
+		for (Long n : longs) {
+			strings.add(Long.toString(n));
 		}
 		return String.join(delimiter, strings);
 	}

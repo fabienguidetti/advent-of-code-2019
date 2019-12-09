@@ -1,35 +1,42 @@
 package fabienguidetti.adventofcode2019.computer;
 
-import java.util.List;
-
 public abstract class ParameterMode {
 	private static final ParameterMode POSITION = new ParameterModePosition();
 	private static final ParameterMode IMMEDIATE = new ParameterModeImmediate();
+	private static final ParameterMode RELATIVE = new ParameterModeRelative();
 
-	public static ParameterMode of(int code) {
-		if (code == 0) {
+	private static int relativeBase = 0;
+
+	public static ParameterMode of(long code) {
+		if (code == 0L) {
 			return POSITION;
-		} else if (code == 1) {
+		} else if (code == 1L) {
 			return IMMEDIATE;
+		} else if (code == 2L) {
+			return RELATIVE;
 		} else {
 			throw new IllegalArgumentException("Unknown parameter mode : " + code);
 		}
 	}
 
-	public abstract int readValue(List<Integer> state, int position);
-	public abstract void writeValue(List<Integer> state, int addressPosition, int value);
+	public static void parameterModeRelativeOffset(int offset) {
+		relativeBase = relativeBase + offset;
+	}
+
+	public abstract long readValue(Memory state, int position);
+	public abstract void writeValue(Memory state, int addressPosition, long value);
 
 	private static class ParameterModePosition extends ParameterMode {
 
 		@Override
-		public int readValue(List<Integer> state, int addressPosition) {
-			int valuePosition = state.get(addressPosition);
+		public long readValue(Memory state, int addressPosition) {
+			int valuePosition = Math.toIntExact(state.get(addressPosition));
 			return state.get(valuePosition);
 		}
 
 		@Override
-		public void writeValue(List<Integer> state, int addressPosition, int value) {
-			int valuePosition = state.get(addressPosition);
+		public void writeValue(Memory state, int addressPosition, long value) {
+			int valuePosition = Math.toIntExact(state.get(addressPosition));
 			state.set(valuePosition, value);
 		}
 	}
@@ -37,13 +44,26 @@ public abstract class ParameterMode {
 	private static class ParameterModeImmediate extends ParameterMode {
 
 		@Override
-		public int readValue(List<Integer> state, int addressPosition) {
+		public long readValue(Memory state, int addressPosition) {
 			return state.get(addressPosition);
 		}
 
 		@Override
-		public void writeValue(List<Integer> state, int addressPosition, int value) {
+		public void writeValue(Memory state, int addressPosition, long value) {
 			state.set(addressPosition, value);
+		}
+	}
+
+	private static class ParameterModeRelative extends ParameterMode {
+
+		@Override
+		public long readValue(Memory state, int addressPosition) {
+			return state.get(relativeBase + Math.toIntExact(state.get(addressPosition)));
+		}
+
+		@Override
+		public void writeValue(Memory state, int addressPosition, long value) {
+			state.set(relativeBase + Math.toIntExact(state.get(addressPosition)), value);
 		}
 	}
 }

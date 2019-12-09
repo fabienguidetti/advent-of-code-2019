@@ -17,13 +17,13 @@ public class Amplifiers {
         this.programText = programText;
     }
 
-    public int maxSignal() {
-        List<Integer> phases = Arrays.asList(0, 1, 2, 3, 4);
-        PermutationIterator<Integer> phasesPermutations = new PermutationIterator<>(phases);
+    public long maxSignal() {
+        List<Long> phases = Arrays.asList(0L, 1L, 2L, 3L, 4L);
+        PermutationIterator<Long> phasesPermutations = new PermutationIterator<>(phases);
 
-        int maxSignal = Integer.MIN_VALUE;
+        long maxSignal = Long.MIN_VALUE;
         while (phasesPermutations.hasNext()) {
-            int signal = getSignal(phasesPermutations.next());
+            long signal = getSignal(phasesPermutations.next());
             if (signal > maxSignal) {
                 maxSignal = signal;
             }
@@ -31,13 +31,13 @@ public class Amplifiers {
         return maxSignal;
     }
 
-    public int maxSignalWithFeedback() {
-        List<Integer> phases = Arrays.asList(5, 6, 7, 8, 9);
-        PermutationIterator<Integer> phasesPermutations = new PermutationIterator<>(phases);
+    public long maxSignalWithFeedback() {
+        List<Long> phases = Arrays.asList(5L, 6L, 7L, 8L, 9L);
+        PermutationIterator<Long> phasesPermutations = new PermutationIterator<>(phases);
 
-        int maxSignal = Integer.MIN_VALUE;
+        long maxSignal = Long.MIN_VALUE;
         while (phasesPermutations.hasNext()) {
-            int signal = getSignalWithFeedback(phasesPermutations.next());
+            long signal = getSignalWithFeedback(phasesPermutations.next());
             if (signal > maxSignal) {
                 maxSignal = signal;
             }
@@ -45,8 +45,8 @@ public class Amplifiers {
         return maxSignal;
     }
 
-    private int getSignal(List<Integer> phases) {
-        int signal = 0;
+    private long getSignal(List<Long> phases) {
+        long signal = 0L;
         for (int i=0; i < AMPLIFIERS_COUNT; i++) {
             Program amplifier = new Program(programText);
             amplifier.input(phases.get(i), signal);
@@ -56,8 +56,8 @@ public class Amplifiers {
         return signal;
     }
 
-    private int getSignalWithFeedback(List<Integer> phases) {
-        int signal = 0;
+    private long getSignalWithFeedback(List<Long> phases) {
+        long signal = 0L;
         List<Program> amplifiers = new ArrayList<>();
         boolean hasOutput = true;
         for (int i=0; i < AMPLIFIERS_COUNT; i++) {

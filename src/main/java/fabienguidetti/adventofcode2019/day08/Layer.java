@@ -5,18 +5,18 @@ import java.util.List;
 
 public class Layer {
     private int width;
-    private List<Integer> layerIntegers = new ArrayList<>();
+    private List<Long> layerLongs = new ArrayList<>();
 
-    public Layer(int width, List<Integer> layerIntegers) {
+    public Layer(int width, List<Long> layerLongs) {
         this.width = width;
-        this.layerIntegers = layerIntegers;
+        this.layerLongs = layerLongs;
     }
 
-    public int get(int row, int column) {
-        return layerIntegers.get(row * width + column);
+    public long get(int row, int column) {
+        return layerLongs.get(row * width + column);
     }
 
-    public long countDigit(int digit) {
-        return layerIntegers.stream().filter(n -> n.equals(digit)).count();
+    public long countDigit(long digit) {
+        return layerLongs.stream().filter(n -> n.equals(digit)).count();
     }
 }
