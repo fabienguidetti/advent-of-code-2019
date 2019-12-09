@@ -1,11 +1,8 @@
 package fabienguidetti.adventofcode2019.day08;
 
-import fabienguidetti.adventofcode2019.util.Utils;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 public class Puzzle1 {
 	public static void main(String[] args) throws IOException {

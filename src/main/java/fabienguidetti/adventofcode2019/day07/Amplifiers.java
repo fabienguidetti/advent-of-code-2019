@@ -19,7 +19,7 @@ public class Amplifiers {
 
     public int maxSignal() {
         List<Integer> phases = Arrays.asList(0, 1, 2, 3, 4);
-        PermutationIterator phasesPermutations = new PermutationIterator(phases);
+        PermutationIterator<Integer> phasesPermutations = new PermutationIterator<>(phases);
 
         int maxSignal = Integer.MIN_VALUE;
         while (phasesPermutations.hasNext()) {
@@ -33,7 +33,7 @@ public class Amplifiers {
 
     public int maxSignalWithFeedback() {
         List<Integer> phases = Arrays.asList(5, 6, 7, 8, 9);
-        PermutationIterator phasesPermutations = new PermutationIterator(phases);
+        PermutationIterator<Integer> phasesPermutations = new PermutationIterator<>(phases);
 
         int maxSignal = Integer.MIN_VALUE;
         while (phasesPermutations.hasNext()) {

@@ -3,8 +3,6 @@ package fabienguidetti.adventofcode2019.day08;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Puzzle2 {
 	private static final int WIDTH = 25;

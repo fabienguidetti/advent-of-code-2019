@@ -1,8 +1,6 @@
 package fabienguidetti.adventofcode2019.computer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import fabienguidetti.adventofcode2019.util.Utils;

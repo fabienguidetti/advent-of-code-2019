@@ -1,9 +1,8 @@
 package fabienguidetti.adventofcode2019.day08;
 
-import fabienguidetti.adventofcode2019.computer.Program;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class ImageTest {
 	@Test
