@@ -33,7 +33,7 @@ public class Program {
 
 	public boolean executeUntilOutput() {
 		hasOutput = false;
-		position = executeRecursively(position);
+		position = executeIteratively(position);
 		return hasOutput;
 	}
 
@@ -60,60 +60,62 @@ public class Program {
 		setVerb(2);
 	}
 
-	private int executeRecursively(int position) {
-		long instruction = state.get(position);
-		long opcode = instruction % 100;
-		if (opcode == 99) {
-			return position;
-		} else if (opcode == 1) {
-			long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
-			long value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
-			parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 + value2);
-			return executeRecursively(position + 4);
-		} else if (opcode == 2) {
-			long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
-			long value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
-			parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 * value2);
-			return executeRecursively(position + 4);
-		} else if (opcode == 3) {
-			parameterModeOf(instruction, 1).writeValue(state, position + 1, input.get(inputIndex++));
-			return executeRecursively(position + 2);
-		} else if (opcode == 4) {
-			output = parameterModeOf(instruction, 1).readValue(state, position + 1);
-			hasOutput = true;
-			return position + 2;
-		} else if (opcode == 5) {
-			long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
-			if (value1 != 0) {
+	private int executeIteratively(int position) {
+		while (true) {
+			long instruction = state.get(position);
+			long opcode = instruction % 100;
+			if (opcode == 99) {
+				return position;
+			} else if (opcode == 1) {
+				long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
 				long value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
-				return executeRecursively(Math.toIntExact(value2));
-			} else {
-				return executeRecursively(position + 3);
-			}
-		} else if (opcode == 6) {
-			long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
-			if (value1 == 0) {
+				parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 + value2);
+				position = position + 4;
+			} else if (opcode == 2) {
+				long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
 				long value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
-				return executeRecursively(Math.toIntExact(value2));
+				parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 * value2);
+				position = position + 4;
+			} else if (opcode == 3) {
+				parameterModeOf(instruction, 1).writeValue(state, position + 1, input.get(inputIndex++));
+				position = position + 2;
+			} else if (opcode == 4) {
+				output = parameterModeOf(instruction, 1).readValue(state, position + 1);
+				hasOutput = true;
+				return position + 2;
+			} else if (opcode == 5) {
+				long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
+				if (value1 != 0) {
+					long value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
+					position = Math.toIntExact(value2);
+				} else {
+					position = position + 3;
+				}
+			} else if (opcode == 6) {
+				long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
+				if (value1 == 0) {
+					long value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
+					position = Math.toIntExact(value2);
+				} else {
+					position = position + 3;
+				}
+			} else if (opcode == 7) {
+				long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
+				long value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
+				parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 < value2 ? 1 : 0);
+				position = position + 4;
+			} else if (opcode == 8) {
+				long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
+				long value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
+				parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 == value2 ? 1 : 0);
+				position = position + 4;
+			} else if (opcode == 9) {
+				long offset = parameterModeOf(instruction, 1).readValue(state, position + 1);
+				ParameterMode.parameterModeRelativeOffset(Math.toIntExact(offset));
+				position = position + 2;
 			} else {
-				return executeRecursively(position + 3);
+				throw new IllegalArgumentException("Unknown opcode : " + opcode);
 			}
-		} else if (opcode == 7) {
-			long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
-			long value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
-			parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 < value2 ? 1 : 0);
-			return executeRecursively(position + 4);
-		} else if (opcode == 8) {
-			long value1 = parameterModeOf(instruction, 1).readValue(state, position + 1);
-			long value2 = parameterModeOf(instruction, 2).readValue(state, position + 2);
-			parameterModeOf(instruction, 3).writeValue(state, position + 3, value1 == value2 ? 1 : 0);
-			return executeRecursively(position + 4);
-		} else if (opcode == 9) {
-			long offset = parameterModeOf(instruction, 1).readValue(state, position + 1);
-			ParameterMode.parameterModeRelativeOffset(Math.toIntExact(offset));
-			return executeRecursively(position + 2);
-		} else {
-			throw new IllegalArgumentException("Unknown opcode : " + opcode);
 		}
 	}
 
