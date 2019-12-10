@@ -2,6 +2,7 @@ package fabienguidetti.adventofcode2019.day10;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -96,5 +97,55 @@ public class AsteroidMapTest {
 				"###.##.####.##.#..##");
 		AsteroidMap map5 = AsteroidMap.load(map5Text);
 		assertEquals("Best is 11,13 with 210 other asteroids detected", map5.bestLocation());
+	}
+
+	@Test
+	public void testVaporization() {
+		List<String> mapText = Arrays.asList(
+				".#..##.###...#######",
+				"##.############..##.",
+				".#.######.########.#",
+				".###.#######.####.#.",
+				"#####.##.#.##.###.##",
+				"..#####..#.#########",
+				"####################",
+				"#.####....###.#.#.##",
+				"##.#################",
+				"#####.##.###..####..",
+				"..######..##.#######",
+				"####.##.####...##..#",
+				".#####..#.######.###",
+				"##...#.##########...",
+				"#.##########.#######",
+				".####.#.###.###.#.##",
+				"....##.##.###..#####",
+				".#.#.###########.###",
+				"#.#.#.#####.####.###",
+				"###.##.####.##.#..##");
+		AsteroidMap map = AsteroidMap.load(mapText);
+
+		List<Asteroid> vaporized = new ArrayList<>();
+		vaporized.add(null); // zero-th
+		for (int i=1; i <= 299; i++) {
+			vaporized.add(map.vaporizeOneAsteroid());
+		}
+
+		assertCoordinates(vaporized.get(1), 11, 12);
+		assertCoordinates(vaporized.get(2), 12, 1);
+		assertCoordinates(vaporized.get(3), 12, 2);
+		assertCoordinates(vaporized.get(10), 12, 8);
+		assertCoordinates(vaporized.get(20), 16, 0);
+		assertCoordinates(vaporized.get(50), 16, 9);
+		assertCoordinates(vaporized.get(100), 10, 16);
+		assertCoordinates(vaporized.get(199), 9, 6);
+		assertCoordinates(vaporized.get(200), 8, 2);
+		assertCoordinates(vaporized.get(201), 10, 9);
+		assertCoordinates(vaporized.get(299), 11, 1);
+	}
+
+	private void assertCoordinates(Asteroid asteroid, int expectedX, int expectedY) {
+		String expectedCoordinates = expectedX + "," + expectedY;
+		String actualCoordinates = asteroid.getX() + "," + asteroid.getY();
+		assertEquals(expectedCoordinates, actualCoordinates);
 	}
 }
