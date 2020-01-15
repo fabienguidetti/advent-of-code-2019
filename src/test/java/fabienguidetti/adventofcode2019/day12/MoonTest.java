@@ -7,20 +7,21 @@ import org.junit.jupiter.api.Test;
 public class MoonTest {
 	@Test
 	public void testExample1() {
-		Moon moon = Moon.of("<x=-4, y=3, z=15>");
-		assertPosition(-4, 3, 15, moon);
-		assertVelocity(0, 0, 0, moon);
+		System system = new System();
+		system.addMoonOf("<x=-4, y=3, z=15>");
+		assertPosition(system, 0, -4, 3, 15);
+		assertVelocity(system, 0, 0, 0, 0);
 	}
 
-	static void assertPosition(int x, int y, int z, Moon moon) {
-		assertEquals(x, moon.positionX());
-		assertEquals(y, moon.positionY());
-		assertEquals(z, moon.positionZ());
+	static void assertPosition(System system, int moonIndex, int x, int y, int z) {
+		assertEquals(x, Moon.positionX(system.state(), moonIndex));
+		assertEquals(y, Moon.positionY(system.state(), moonIndex));
+		assertEquals(z, Moon.positionZ(system.state(), moonIndex));
 	}
 
-	static void assertVelocity(int x, int y, int z, Moon moon) {
-		assertEquals(x, moon.velocityX());
-		assertEquals(y, moon.velocityY());
-		assertEquals(z, moon.velocityZ());
+	static void assertVelocity(System system, int moonIndex, int x, int y, int z) {
+		assertEquals(x, Moon.velocityX(system.state(), moonIndex));
+		assertEquals(y, Moon.velocityY(system.state(), moonIndex));
+		assertEquals(z, Moon.velocityZ(system.state(), moonIndex));
 	}
 }
