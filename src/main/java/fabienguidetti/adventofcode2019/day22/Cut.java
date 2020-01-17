@@ -1,23 +1,19 @@
 package fabienguidetti.adventofcode2019.day22;
 
-class Cut extends ShufflingTechnique {
-	int n;
+import java.math.BigInteger;
 
-	Cut(int n) {
-		this.n = n;
+class Cut extends ShufflingTechnique {
+	BigInteger n;
+
+	Cut(long n) {
+		this.n = new BigInteger(Long.toString(n));
 	}
 
 	@Override
 	Deck applyOn(Deck deck) {
-		int size = deck.size();
-		int cutParameter = (n >= 0 ? n : size + n);
-		Deck cutCards = new Deck(size);
-		for (int i = 0; i < cutParameter; i++) {
-			cutCards.setCard(i + size - cutParameter, deck.card(i));
-		}
-		for (int i = cutParameter; i < size; i++) {
-			cutCards.setCard(i - cutParameter, deck.card(i));
-		}
-		return cutCards;
+		BigInteger size = deck.size();
+		BigInteger a = deck.a();
+		BigInteger b = deck.b();
+		return new Deck(size, a, b.subtract(n).mod(size));
 	}
 }

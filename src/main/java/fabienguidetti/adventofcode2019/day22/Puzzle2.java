@@ -6,14 +6,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class Puzzle1 {
+public class Puzzle2 {
 	public static void main(String[] args) throws IOException {
 		List<String> input = Files.readAllLines(Paths.get("day-22-input.txt"));
-		Deck deck = new Deck(new BigInteger("10007"));
+		Deck deck = new Deck(new BigInteger("119315717514047"));
 		for (String shufflingTechniqueText : input) {
 			deck = deck.shuffle(shufflingTechniqueText);
 		}
 		System.out.println(deck.formula());
-		System.out.println("Position of card 2019 : " + deck.positionOf(new BigInteger("2019")));
+		deck = deck.repeatShuffle(new BigInteger("101741582076661"));
+		System.out.println(deck.formula());
 	}
 }

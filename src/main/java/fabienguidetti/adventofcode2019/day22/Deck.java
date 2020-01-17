@@ -1,44 +1,49 @@
 package fabienguidetti.adventofcode2019.day22;
 
-import java.util.Arrays;
+import java.math.BigInteger;
 
 class Deck {
-	private int[] cards;
+	// Position of card i is (a*i + b) mod size
+	private BigInteger size;
+	private BigInteger a;
+	private BigInteger b;
 
-	Deck(int size) {
-		cards = new int[size];
-		for (int i = 0; i < size; i++) {
-			cards[i] = i;
-		}
+	Deck(BigInteger size) {
+		this(size, BigInteger.ONE, BigInteger.ZERO);
 	}
 
-	int size() {
-		return cards.length;
+	Deck(BigInteger size, BigInteger a, BigInteger b) {
+		this.size = size;
+		this.a = a;
+		this.b = b;
 	}
 
-	int card(int cardIndex) {
-		return cards[cardIndex];
+	BigInteger size() {
+		return size;
 	}
 
-	void setCard(int cardIndex, int value) {
-		cards[cardIndex] = value;
+	BigInteger a() {
+		return a;
 	}
 
-	int positionOf(int cardValue) {
-		for (int i = 0; i < size(); i++) {
-			if (card(i) == cardValue) {
-				return i;
-			}
-		}
-		return -1; // not found
+	BigInteger b() {
+		return b;
+	}
+
+	BigInteger positionOf(BigInteger cardValue) {
+		return a.multiply(cardValue).add(b).mod(size);
 	}
 
 	Deck shuffle(String shufflingTechniqueText) {
 		return ShufflingTechnique.fromString(shufflingTechniqueText).applyOn(this);
 	}
 
-	@Override
-	public String toString() {
-		return Arrays.toString(cards).replaceAll(",", "");
+	String formula() {
+		return "Deck formula : (" + a + " * i + " + b + ") mod " + size;
+	}
+
+	public Deck repeatShuffle(BigInteger bigInteger) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

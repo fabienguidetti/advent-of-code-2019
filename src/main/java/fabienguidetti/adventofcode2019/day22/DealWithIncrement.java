@@ -1,19 +1,19 @@
 package fabienguidetti.adventofcode2019.day22;
 
-class DealWithIncrement extends ShufflingTechnique {
-	int n;
+import java.math.BigInteger;
 
-	DealWithIncrement(int n) {
-		this.n = n;
+class DealWithIncrement extends ShufflingTechnique {
+	BigInteger n;
+
+	DealWithIncrement(long n) {
+		this.n = new BigInteger(Long.toString(n));
 	}
 
 	@Override
 	Deck applyOn(Deck deck) {
-		int size = deck.size();
-		Deck spaceOnTable = new Deck(size);
-		for (int i = 0; i < size; i++) {
-			spaceOnTable.setCard((n * i) % size, deck.card(i));
-		}
-		return spaceOnTable;
+		BigInteger size = deck.size();
+		BigInteger a = deck.a();
+		BigInteger b = deck.b();
+		return new Deck(size, n.multiply(a).mod(size), n.multiply(b).mod(size));
 	}
 }
